@@ -59,7 +59,7 @@ def delete_post(post_id):
 
 @app.route("/", methods=["GET"])
 def home():
-    return jsonify({"message": "Blog API is running"}), 200
+    return jsonify({"message": "Blog APP is running"}), 200
 
 
 if __name__ == "__main__":
