@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "indupriyavempati/blogapp:latest"
+        DOCKER_PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe"
     }
 
     stages {
@@ -14,37 +15,33 @@ pipeline {
 
         stage('Setup Python Environment') {
             steps {
-                // Create venv
-                bat 'python -m venv venv'
+                // Create venv if not exists
+                bat 'if not exist venv python -m venv venv'
 
-                // Activate and install dependencies
-                bat 'python -m venv venv'
+                // Upgrade pip and install dependencies
                 bat 'venv\\Scripts\\python.exe -m pip install --upgrade pip'
                 bat 'venv\\Scripts\\python.exe -m pip install -r requirements.txt'
-
             }
         }
 
-stage('Run Tests') {
-    steps {
-        bat 'venv\\Scripts\\pytest tests || echo "No tests folder found, skipping tests"'
-    }
-}
-
+        stage('Run Tests') {
+            steps {
+                // Run pytest
+                bat 'venv\\Scripts\\python.exe -m pytest tests'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
-               bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" build -t indupriyavempati/blogapp .'
-
-
+                bat "\"${env.DOCKER_PATH}\" build -t ${env.IMAGE_NAME} ."
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                // Make sure Jenkins Docker host is logged in
-                bat "\"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe\" login -u indupriyavempati -p Priya@2004"
-               bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" push indupriyavempati/blogapp'
+                // Hardcoded login (username & password)
+                bat "\"${env.DOCKER_PATH}\" login -u indupriyavempati -p Priya@2004"
+                bat "\"${env.DOCKER_PATH}\" push ${env.IMAGE_NAME}"
             }
         }
     }
