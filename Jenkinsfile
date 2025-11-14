@@ -34,7 +34,9 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat "docker build -t indupriyavempati/blogapp ."
+               bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" build -t indupriyavempati/blogapp .'
+
+
             }
         }
 
@@ -42,7 +44,7 @@ pipeline {
             steps {
                 // Make sure Jenkins Docker host is logged in
                 bat "docker login -u indupriyavempati -p Priya@2004"
-                bat "docker push indupriyavempati/blogapp"
+               bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" push indupriyavempati/blogapp'
             }
         }
     }
