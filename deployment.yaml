@@ -19,7 +19,7 @@ spec:
             - containerPort: 5000
           env:
             - name: MONGO_URI
-              value: "mongodb+srv://vempatiindupriya:vempatiindupriya@cluster0.xw2h0mz.mongodb.net/"
+              value: "db_url/"
             - name: DB_NAME
               value: "blog-db"
             - name: COLLECTION_NAME
