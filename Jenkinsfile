@@ -25,11 +25,16 @@ pipeline {
             }
         }
 
-       stage('Run Tests') {
+      stage('Run Tests') {
     steps {
-        echo "No tests folder found, skipping tests"
+        sh '''
+            . venv/bin/activate
+            mkdir -p reports
+            pytest --junitxml=reports/tests.xml || true
+        '''
     }
 }
+
 
 
         stage('Build Docker Image') {
